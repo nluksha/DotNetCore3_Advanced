@@ -28,5 +28,10 @@ namespace Advanced.Controllers
 
             return View(model);
         }
+
+        public IActionResult Blazor()
+        {
+            return View();
+        }
     }
 }

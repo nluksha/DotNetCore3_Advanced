@@ -5,14 +5,19 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <base href="~/" />
 </head>
 <body>
     <div class="m-2">
         <a asp-action="Index" asp-controller="Home">Controllers</a>
         <a asp-page="/Index">Pages</a>
+        <a asp-action="Blazor" asp-controller="Home">Blazor from Controller</a>
+        <a asp-page="/Blazor">Blazor from Page</a>
     </div>
     <div class="m-2">
         @RenderBody()
     </div>
+
+    <script src="_framework/blazor.server.js"></script>
 </body>
 </html>

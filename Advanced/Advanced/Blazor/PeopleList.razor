@@ -20,16 +20,7 @@
     </tbody>
 </table>
 
-<div class="form-group">
-    <label for="city">City</label>
-    <select @bind="SelectedCity" name="city" class="form-control">
-        <option disabled selected>Select City</option>
-        @foreach (var city in Cities)
-        {
-            <option value="@city" selected="@(city == SelectedCity)">@city</option>
-        }
-    </select>
-</div>
+<SelectFilter Title="City" Values="@Cities" autofocus="true" name="city" required="true" />
 
 @code {
     [Inject]

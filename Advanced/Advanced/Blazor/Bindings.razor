@@ -1,0 +1,20 @@
+﻿<div class="form-group">
+    <label>City:</label>
+    <input @bind-value="City" @bind-value:event="oninput" class="form-control" />
+</div>
+
+<div class="p-2 mb-2">City Value: @City</div>
+
+<button class="btn btn-primary" @onclick="@(() => City = "Paris")">Paris</button>
+<button class="btn btn-primary" @onclick="@(() => City = "Chicago")">Chicago</button>
+
+@code {
+    public string City { get; set; } = "London";
+
+    /*
+    public void UpdateCity(ChangeEventArgs e)
+    {
+        City = e.Value as string;
+    }
+    */
+}

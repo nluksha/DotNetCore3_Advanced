@@ -23,7 +23,7 @@ namespace Advanced.Models
                 context.SaveChanges();
 
                 var l1 = new Location { City = "Oakland", State = "CA" };
-                var l2 = new Location { City = "San Kose", State = "CA" };
+                var l2 = new Location { City = "San Jose", State = "CA" };
                 var l3 = new Location { City = "New York", State = "NY" };
 
                 context.Locations.AddRange(l1, l2, l3);

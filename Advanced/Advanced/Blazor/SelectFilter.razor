@@ -1,7 +1,7 @@
 ﻿<h3>SelectFilter</h3>
 <div class="form-group">
     <label for="select-@Title">@Title</label>
-    <select name="select-@Title" @bind="SelectedValue" @attributes="Attrs" class="form-control">
+    <select name="select-@Title" value="@SelectedValue" @attributes="Attrs" @onchange="HandleSelect" class="form-control">
         <option disabled selected>Select @Title</option>
         @foreach (var val in Values)
         {
@@ -14,6 +14,7 @@
     [Parameter]
     public IEnumerable<string> Values { get; set; } = Enumerable.Empty<string>();
 
+    [Parameter]
     public string SelectedValue { get; set; }
 
     [Parameter]
@@ -21,4 +22,13 @@
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> Attrs { get; set; }
+
+    [Parameter]
+    public EventCallback<string> SelectedValueChanged { get; set; }
+
+    public async Task HandleSelect(ChangeEventArgs e)
+    {
+        SelectedValue = e.Value as string;
+        await SelectedValueChanged.InvokeAsync(SelectedValue);
+    }
 }

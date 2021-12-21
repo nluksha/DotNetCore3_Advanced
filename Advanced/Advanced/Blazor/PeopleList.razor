@@ -20,7 +20,9 @@
     </tbody>
 </table>
 
-<SelectFilter Title="@SelectTitle" Values="@Cities" autofocus="true" name="city" required="true" />
+<SelectFilter Title="@SelectTitle" Values="@Cities" @bind-SelectedValue="SelectedCity" autofocus="true" name="city" required="true" />
+
+<button @onclick="@(() => SelectedCity = "San Jose")" class="btn btn-primary mt-2">Change</button>
 
 @code {
     [Inject]
@@ -42,4 +44,9 @@
     public string SelectTitle { get; set; }
 
     public string GetClass(string city) => SelectedCity == city ? "bg-info text-white" : "";
+
+    //public void HandleCustom(string newValue)
+    //{
+    //    SelectedCity = newValue;
+    //}
 }

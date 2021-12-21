@@ -20,9 +20,11 @@
     </tbody>
 </table>
 
-<SelectFilter Title="@SelectTitle" Values="@Cities" @bind-SelectedValue="SelectedCity" autofocus="true" name="city" required="true" />
+<ThemeWrapper Theme="info" Title="Location selector">
+    <SelectFilter Title="@SelectTitle" Values="@Cities" @bind-SelectedValue="SelectedCity" autofocus="true" name="city" required="true" />
 
-<button @onclick="@(() => SelectedCity = "San Jose")" class="btn btn-primary mt-2">Change</button>
+    <button @onclick="@(() => SelectedCity = "San Jose")" class="btn btn-primary mt-2">Change</button>
+</ThemeWrapper>
 
 @code {
     [Inject]

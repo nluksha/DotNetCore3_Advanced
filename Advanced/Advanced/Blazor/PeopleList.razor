@@ -1,4 +1,7 @@
-﻿<TableTemplate RowType="Person" RowData="People">
+﻿@page "/" 
+@page "/people"
+
+<TableTemplate RowType="Person" RowData="People">
     <TableHeader>
         <tr>
             <th>Id</th>
@@ -21,6 +24,8 @@
     <button @onclick="@(() => SelectedCity = "San Jose")" class="btn btn-primary mt-2">Change</button>
 </ThemeWrapper>
 
+<NavLink class="btn btn-primary" href="/depts">Departments</NavLink>
+
 @code {
     [Inject]
     public DataContext Context { get; set; }
@@ -41,9 +46,4 @@
     public string SelectTitle { get; set; }
 
     public string GetClass(string city) => SelectedCity == city ? "bg-info text-white" : "";
-
-    //public void HandleCustom(string newValue)
-    //{
-    //    SelectedCity = newValue;
-    //}
 }

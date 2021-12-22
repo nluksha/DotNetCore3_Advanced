@@ -1,0 +1,28 @@
+﻿@page "/departments"
+@page "/depts"
+
+<TableTemplate RowType="Department" RowData="Departments">
+    <TableHeader>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>People</th>
+            <th>Locations</th>
+        </tr>
+    </TableHeader>
+    <RowTemplate Context="d">
+        <td>@d.DepartmentId</td>
+        <td>@d.Name</td>
+        <td>@(String.Join(", ", d.People.Select( p => p.Surname)))</td>
+        <td>@(String.Join(", ", d.People.Select( p => p.Location.City).Distinct()))</td>
+    </RowTemplate>
+</TableTemplate>
+
+@code {
+    [Inject]
+    public DataContext Context { get; set; }
+
+    public IEnumerable<Department> Departments => Context.Departmens
+        .Include(d => d.People)
+        .ThenInclude(p => p.Location);
+}

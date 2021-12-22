@@ -1,24 +1,19 @@
-﻿<table class="table table-striped table-bordered table-sm">
-    <thead>
+﻿<TableTemplate RowType="Person" RowData="People">
+    <TableHeader>
         <tr>
             <th>Id</th>
             <th>Name</th>
             <th>Dept</th>
             <th>Locatiom</th>
         </tr>
-    </thead>
-    <tbody>
-        @foreach (var p in People)
-        {
-            <tr class="@GetClass(p.Location.City)">
-                <td>@p.PersonId</td>
-                <td>@p.Surname, @p.Firstname</td>
-                <td>@p.Department.Name</td>
-                <td>@p.Location.City, @p.Location.State</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    </TableHeader>
+    <RowTemplate Context="p">
+        <td>@p.PersonId</td>
+        <td>@p.Surname, @p.Firstname</td>
+        <td>@p.Department.Name</td>
+        <td>@p.Location.City, @p.Location.State</td>
+    </RowTemplate>
+</TableTemplate>
 
 <ThemeWrapper Theme="info" Title="Location selector">
     <SelectFilter Title="@SelectTitle" Values="@Cities" @bind-SelectedValue="SelectedCity" autofocus="true" name="city" required="true" />

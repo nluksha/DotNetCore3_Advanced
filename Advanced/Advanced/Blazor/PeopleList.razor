@@ -8,6 +8,7 @@
             <th>Name</th>
             <th>Dept</th>
             <th>Locatiom</th>
+            <th></th>
         </tr>
     </TableHeader>
     <RowTemplate Context="p">
@@ -15,14 +16,11 @@
         <td>@p.Surname, @p.Firstname</td>
         <td>@p.Department.Name</td>
         <td>@p.Location.City, @p.Location.State</td>
+        <td>
+            <NavLink href="@GetEditUrl(p.PersonId)" class="btn btn-primary">Edit</NavLink>
+        </td>
     </RowTemplate>
 </TableTemplate>
-
-<ThemeWrapper Theme="info" Title="Location selector">
-    <SelectFilter Title="@SelectTitle" Values="@Cities" @bind-SelectedValue="SelectedCity" autofocus="true" name="city" required="true" />
-
-    <button @onclick="@(() => SelectedCity = "San Jose")" class="btn btn-primary mt-2">Change</button>
-</ThemeWrapper>
 
 <NavLink class="btn btn-primary" href="/depts">Departments</NavLink>
 
@@ -32,18 +30,7 @@
 
     public IEnumerable<Person> People => Context.People
         .Include(p => p.Department)
-        .Include(p => p.Location)
-        .Take(ItemCount);
+        .Include(p => p.Location);
 
-    public IEnumerable<string> Cities => Context.Locations.Select(l => l.City);
-
-    public string SelectedCity { get; set; }
-
-    [Parameter]
-    public int ItemCount { get; set; } = 4;
-
-    [Parameter]
-    public string SelectTitle { get; set; }
-
-    public string GetClass(string city) => SelectedCity == city ? "bg-info text-white" : "";
+    public string GetEditUrl(long id) => $"/person/{id}";
 }

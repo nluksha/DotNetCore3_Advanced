@@ -18,6 +18,8 @@
     </RowTemplate>
 </TableTemplate>
 
+<button class="btn btn-primary" @onclick="HandleClick">People</button>
+
 @code {
     [Inject]
     public DataContext Context { get; set; }
@@ -25,4 +27,9 @@
     public IEnumerable<Department> Departments => Context.Departmens
         .Include(d => d.People)
         .ThenInclude(p => p.Location);
+
+    [Inject]
+    public NavigationManager NavManager { get; set; }
+
+    public void HandleClick() => NavManager.NavigateTo("/people");
 }

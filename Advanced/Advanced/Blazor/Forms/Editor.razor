@@ -22,12 +22,16 @@
 
         <div class="form-group">
             <label>Dept Id</label>
-            <InputNumber @bind-Value="PersonData.DepartmentId" class="form-control" />
+            <CustomSelect TValue="long" Values="Departments" Parser="@(str => long.Parse(str))" @bind-Value="PersonData.DepartmentId">
+                <option selected disabled value="0">Choose a Department</option>
+            </CustomSelect>
         </div>
 
         <div class="form-group">
-            <label>Person Id</label>
-            <InputNumber @bind-Value="PersonData.PersonId" class="form-control" />
+            <label>Location Id</label>
+            <CustomSelect TValue="long" Values="Locations" Parser="@(str => long.Parse(str))" @bind-Value="PersonData.LocationId">
+                <option selected disabled value="0">Choose a Location</option>
+            </CustomSelect>
         </div>
 
         <div class="text-center">
@@ -48,8 +52,16 @@
 
     public Person PersonData { get; set; } = new Person();
 
+    public IDictionary<string, long> Departments { get; set; } = new Dictionary<string, long>();
+
+    public IDictionary<string, long> Locations { get; set; } = new Dictionary<string, long>();
+
     protected async override Task OnParametersSetAsync()
     {
         PersonData = await Context.People.FindAsync(Id);
+
+        Departments = await Context.Departmens.ToDictionaryAsync(d => d.Name, d => d.DepartmentId);
+
+        Locations = await Context.Locations.ToDictionaryAsync(l => $"{l.City}, {l.State}", l => l.LocationId);
     }
 }

@@ -40,15 +40,27 @@
     </tbody>
 </table>
 
+<button class="btn btn-danger" @onclick="UpdateData">Update</button>
+
+<button class="btn btn-primary" @onclick="@(() => Counter++)">Increment</button>
+<span class="h5">Counter: @Counter</span>
+
 @code {
-    [Inject]
-    public DataContext Context { get; set; }
+        [Inject]
+        public DataContext Context { get; set; }
 
     public IEnumerable<Person> People { get; set; } = Enumerable.Empty<Person>();
 
-    protected override void OnInitialized()
+    public int Counter { get; set; } = 0;
+
+    protected async override Task OnInitializedAsync()
     {
-        People = Context.People.Include(p => p.Department).Include(p => p.Location);
+        await UpdateData();
+    }
+
+    private async Task UpdateData()
+    {
+        People = await Context.People.Include(p => p.Department).Include(p => p.Location).ToListAsync<Person>();
     }
 
     public string GetEditUrl(long id) => $"/forms/edit/{id}";

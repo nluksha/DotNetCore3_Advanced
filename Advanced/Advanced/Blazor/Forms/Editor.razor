@@ -1,5 +1,7 @@
 ﻿@page "/forms/edit/{id:long}"
 @layout EmptyLayout
+@inherits OwningComponentBase
+@using Microsoft.Extensions.DependencyInjection
 
 <link href="/blazorValidation.css" rel="stylesheet" />
 <h4 class="bg-primary text-center text-white p-2">Edit</h4>
@@ -54,8 +56,8 @@
     [Inject]
     public NavigationManager NavManager { get; set; }
 
-    [Inject]
-    DataContext Context { get; set; }
+    // [Inject] We don't need this due to OwningComponentBase
+    DataContext Context => ScopedServices.GetService<DataContext>();
 
     [Parameter]
     public long Id { get; set; }
@@ -80,4 +82,6 @@
 
         Locations = await Context.Locations.ToDictionaryAsync(l => $"{l.City}, {l.State}", l => l.LocationId);
     }
+
+    //public void Dispose() => Context.Entry(PersonData).State = EntityState.Detached;
 }

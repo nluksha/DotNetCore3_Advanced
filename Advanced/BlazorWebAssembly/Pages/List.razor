@@ -1,0 +1,26 @@
+﻿@page "/forms"
+@page "/forms/list"
+
+<h5>People (WebAssembly)</h5>
+<ul>
+    @foreach (var p in People)
+    {
+        <li>@p.Firstname @p.Surname</li>
+    }
+</ul>
+
+@code {
+    [Inject]
+    public HttpClient Http { get; set; }
+    public Person[] People { get; set; } = Array.Empty<Person>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await UpdateData();
+    }
+
+    private async Task UpdateData()
+    {
+        People = await Http.GetFromJsonAsync<Person[]>("http://localhost:5000/api/people");
+    }
+}

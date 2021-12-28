@@ -16,6 +16,8 @@ namespace Advanced
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public IConfiguration Configuration { get; set; }
         public Startup(IConfiguration config)
         {
@@ -32,10 +34,20 @@ namespace Advanced
                 optopns.EnableSensitiveDataLogging(true);
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:5100")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod();
+                                  });
+            });
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddServerSideBlazor();
-
 
             // For BlazorWebAssebly
             services.AddResponseCompression(options =>
@@ -54,6 +66,7 @@ namespace Advanced
 
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {

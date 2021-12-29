@@ -22,5 +22,16 @@ namespace Advanced.Pages.Users
         {
             Users = UserManager.Users;
         }
+
+        public async Task<IActionResult> OnPostAsync(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                await UserManager.DeleteAsync(user);
+            }
+
+            return RedirectToPage();
+        }
     }
 }

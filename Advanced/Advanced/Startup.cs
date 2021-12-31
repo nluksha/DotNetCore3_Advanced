@@ -83,6 +83,9 @@ namespace Advanced
             app.UseRouting();
             app.UseCors(MyAllowSpecificOrigins);
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("controllers", "controllers/{controller=Home}/{action=Index}/{id?}");
@@ -93,6 +96,7 @@ namespace Advanced
             });
 
             SeedData.SeedDatabase(context);
+            IdentitySeedData.CreateAdminAccout(app.ApplicationServices, Configuration);
         }
     }
 }

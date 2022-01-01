@@ -13,6 +13,10 @@ using Advanced.Models;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Advanced
 {
@@ -79,6 +83,29 @@ namespace Advanced
             {
                 options.Events.DisableRedirectToPath(e => e.OnRedirectToLogin, "/api", StatusCodes.Status401Unauthorized);
                 options.Events.DisableRedirectToPath(e => e.OnRedirectToAccessDenied, "/api", StatusCodes.Status403Forbidden);
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["jwtSecret"])),
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = async ctx =>
+                    {
+                        var usermgr = ctx.HttpContext.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+                        var signinmgr = ctx.HttpContext.RequestServices.GetRequiredService<SignInManager<IdentityUser>>();
+
+                        string username = ctx.Principal.FindFirst(ClaimTypes.Name)?.Value;
+                        IdentityUser idUser = await usermgr.FindByNameAsync(username);
+                        ctx.Principal = await signinmgr.CreateUserPrincipalAsync(idUser);
+                    }
+                };
             });
         }
 

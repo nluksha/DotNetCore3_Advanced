@@ -1,5 +1,6 @@
 ﻿const userName = "nik";
 const password = "1234567";
+let token;
 
 window.addEventListener("DOMContentLoaded", () => {
     const controlDiv = document.getElementById("controls");
@@ -10,7 +11,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 async function login() {
-    let response = await fetch("/api/account/login", {
+    let response = await fetch("/api/account/token", {
         method: "post",
         headers: {
             "Content-Type": "application/json"
@@ -22,13 +23,17 @@ async function login() {
     });
 
     if (response.ok) {
-        displayData("Logged in");
+        token = (await response.json()).token;
+        displayData("Logged in", token);
     } else {
         displayData(`Error: ${response.status}: ${response.statusText}`);
     }
 }
 
 async function logout() {
+    token = "";
+    displayData("Logged out");
+    /*
     let response = await fetch("/api/account/logout", {
         method: "post"
     });
@@ -38,10 +43,14 @@ async function logout() {
     } else {
         displayData(`Error: ${response.status}: ${response.statusText}`);
     }
+    */
 }
 
 async function getData() {
-    let response = await fetch("/api/people");
+    let response = await fetch("/api/people", {
+        headers: { "Authorization": `Bearer ${token}`}
+    });
+
     if (response.ok) {
         let jsonData = await response.json();
 

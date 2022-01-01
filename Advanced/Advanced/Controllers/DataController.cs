@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Advanced.Models;
 
 namespace Advanced.Controllers
 {
     [ApiController]
     [Route("/api/people")]
+    [Authorize]
     public class DataController : ControllerBase
     {
         private DataContext context;

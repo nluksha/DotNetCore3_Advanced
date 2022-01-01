@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Advanced.Models;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Advanced
 {
@@ -68,6 +69,16 @@ namespace Advanced
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireDigit = false;
+            });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(options =>
+            {
+                options.Events.DisableRedirectToPath(e => e.OnRedirectToLogin, "/api", StatusCodes.Status401Unauthorized);
+                options.Events.DisableRedirectToPath(e => e.OnRedirectToAccessDenied, "/api", StatusCodes.Status403Forbidden);
             });
         }
 
